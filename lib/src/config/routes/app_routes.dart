@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:leam/src/views/auth/login_screen.dart';
 import 'package:leam/src/views/auth/otp_screen.dart';
+import 'package:leam/src/views/dashboard_screen.dart';
 import 'package:leam/src/views/home_screen.dart';
 import 'package:leam/src/views/splash_screen.dart';
 
@@ -28,7 +29,8 @@ class AppRoutes {
       GoRoute(
         name: otp,
         path: _otp,
-        builder: (context, state) => const OtpScreen(),
+        builder: (context, state) =>
+            OtpScreen(mobileNumber: state.extra! as String),
       ),
 
       GoRoute(
@@ -45,7 +47,7 @@ class AppRoutes {
       GoRoute(
         name: dashboard,
         path: _dashboard,
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) => const DashboardScreen(),
       ),
     ],
   );

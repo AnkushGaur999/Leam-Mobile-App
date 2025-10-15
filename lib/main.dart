@@ -8,8 +8,10 @@ void main() async{
 
   await initDependencies();
 
+
   runApp(const MyApp());
 }
+
 
 
 
