@@ -1,34 +1,37 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class PersonNameTextField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
-  final String hintText;
-  final TextInputType keyboardType;
-  final String? Function(String?)? validator;
+  final String errorText;
 
-  const CustomTextField({
+  const PersonNameTextField({
     super.key,
     required this.controller,
     required this.labelText,
-    required this.hintText,
-    this.keyboardType = TextInputType.text,
-    this.validator,
+    required this.errorText,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: keyboardType,
+      textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: labelText,
-        hintText: hintText,
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+        prefixIcon: Icon(Icons.person),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
         ),
       ),
-      validator: validator,
+
+      validator: (value) {
+        if (value!.isEmpty) {
+          return errorText;
+        }
+        return null;
+      },
     );
   }
 }

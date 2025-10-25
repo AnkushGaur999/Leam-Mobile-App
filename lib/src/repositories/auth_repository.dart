@@ -1,12 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:leam/src/core/app_exceptions.dart';
 import 'package:leam/src/core/data/data_state.dart';
 import 'package:leam/src/core/data/remote/dio_client.dart';
 import 'package:leam/src/models/auth/request/send_otp_request.dart';
+import 'package:leam/src/models/auth/request/sign_up_request.dart';
 import 'package:leam/src/models/auth/request/verify_otp_request.dart';
+import 'package:leam/src/models/auth/response/login_response.dart';
 import 'package:leam/src/models/auth/response/send_otp_response.dart';
 import 'package:leam/src/models/auth/response/verify_otp_response.dart';
 
 abstract class AuthRepository {
+  Future<DataState<LoginResponse>> loginWithEmailAndPassword({
+    required String email,
+    required String password,
+  });
+
+  Future<DataState<User>> signUp({required SignUpRequest requestData});
+
   Future<DataState<SendOtpResponse>> sendOtp({
     required SendOtpRequest requestData,
   });
@@ -14,12 +24,15 @@ abstract class AuthRepository {
   Future<DataState<VerifyOtpResponse>> verifyOtp({
     required VerifyOtpRequest requestData,
   });
+
+  Future<DataState<bool>> googleSignIn();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
   final DioClient client;
+  final FirebaseAuth auth;
 
-  AuthRepositoryImpl({required this.client});
+  AuthRepositoryImpl({required this.client, required this.auth});
 
   @override
   Future<DataState<SendOtpResponse>> sendOtp({
@@ -79,6 +92,71 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       return DataSuccess(data: dummyVerifyOtpResponse);
+    } catch (e) {
+      final errorMessage = AppExceptions.fromException(e);
+      return DataError(message: errorMessage.message);
+    }
+  }
+
+  @override
+  Future<DataState<bool>> googleSignIn() async {
+    try {
+      // await GoogleSignIn.instance. ;
+
+      return DataSuccess(data: true);
+    } catch (e) {
+      final errorMessage = AppExceptions.fromException(e);
+      return DataError(message: errorMessage.message);
+    }
+  }
+
+  @override
+  Future<DataState<LoginResponse>> loginWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final UserCredential result = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      return DataSuccess(
+        data: LoginResponse(
+          status: true,
+          message: "Login Successful",
+          user: result.user,
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      return DataError(message: e.code);
+    } catch (e) {
+      final errorMessage = AppExceptions.fromException(e);
+      return DataError(message: errorMessage.message);
+    }
+  }
+
+  @override
+  Future<DataState<User>> signUp({required SignUpRequest requestData}) async {
+    try {
+      final UserCredential result = await auth.createUserWithEmailAndPassword(
+        email: requestData.email,
+        password: requestData.password,
+      );
+
+      if (result.user == null) {
+        return DataError(message: "Something Went Wrong! Please try again..");
+      }
+
+      await result.user!.sendEmailVerification();
+
+      await result.user!.updateProfile(
+        displayName: "${requestData.fName} ${requestData.lName}",
+      );
+
+      return DataSuccess(data: result.user!);
+    } on FirebaseAuthException catch (e) {
+      return DataError(message: e.code);
     } catch (e) {
       final errorMessage = AppExceptions.fromException(e);
       return DataError(message: errorMessage.message);

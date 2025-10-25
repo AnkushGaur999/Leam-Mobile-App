@@ -5,13 +5,13 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // User Profile Section
             const Padding(
               padding: EdgeInsets.all(16.0),
               child: Row(
@@ -27,7 +27,7 @@ class SettingsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Ankush Gaur', // Dummy name
+                        'Ankush Gaur',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        'Flutter Developer', // Dummy status/bio
+                        'Flutter Developer',
                         style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                     ],
@@ -86,7 +86,11 @@ class SettingsScreen extends StatelessWidget {
               context,
               icon: Icons.logout,
               title: 'Logout',
-              onTap: () {},
+              onTap: () {
+
+
+
+              },
             ),
           ],
         ),

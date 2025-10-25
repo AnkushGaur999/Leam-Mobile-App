@@ -7,12 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:415637342685:android:ffde15380d86574b3b0e34",
+        "mobilesdk_app_id": "1:415637342685:android:34734906ece62d223b0e34",
         "android_client_info": {
-          "package_name": "com.leam"
+          "package_name": "com.app.leam"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "415637342685-l0psee2es00bmrn13op76n4hlh3ic3bn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.leam",
+            "certificate_hash": "b376f9a5590672b4f7317ab0df28d0b9a348d372"
+          }
+        },
+        {
+          "client_id": "415637342685-hjvgootfou02gbeg6ic5f1ebgj06e0cn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBYy9VssX7k9ZrsBiFJwxKp2n5s7GGpmvU"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415637342685-hjvgootfou02gbeg6ic5f1ebgj06e0cn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "415637342685-5q2rpa10kd670gh7m3q8mmjg8qfvvmq3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.leam"
+              }
+            }
+          ]
         }
       }
     }

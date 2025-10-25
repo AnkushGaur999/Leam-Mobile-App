@@ -1,12 +1,13 @@
-import 'dart:io';
-import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:leam/src/config/routes/app_routes.dart';
-import 'package:leam/src/models/auth/request/send_otp_request.dart';
+import 'package:leam/src/models/auth/request/login_request.dart';
 import 'package:leam/src/viewmodels/auth/auth_view_model.dart';
+import 'package:leam/src/views/auth/widgets/email_text_field.dart';
+import 'package:leam/src/views/auth/widgets/password_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,80 +18,112 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  bool _isPasswordVisible = false;
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
-  Future<void> _handleSendOtp() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    final phone = _phoneController.text;
-
-    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-
-    String? deviceId;
-
-    if (Platform.isIOS) {
-      IosDeviceInfo iosInfo = await deviceInfoPlugin.iosInfo;
-      deviceId = iosInfo.identifierForVendor;
-    } else if (Platform.isAndroid) {
-      AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
-      deviceId = androidInfo.id;
-    }
-
-    if (mounted) {
-      context.read<AuthViewModel>().add(
-        SendOtpEvent(
-          SendOtpRequest(phoneNumber: phone, deviceId: deviceId ?? ""),
-        ),
-      );
-    }
-  }
-
-  void _handleGoogleSignIn() {
+  void _handleGoogleSignIn() async {
     // Implement Google sign-in logic
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final screenHeight = MediaQuery.of(context).size.height;
-    final topPadding = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: screenHeight - topPadding),
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Spacer(),
-                    _buildHeader(),
-                    const Spacer(),
-                    _buildPhoneForm(theme),
-                    const SizedBox(height: 24),
-                    _buildSendOtpButton(theme),
-                    const SizedBox(height: 24),
-                    _buildDivider(),
-                    const SizedBox(height: 24),
-                    _buildGoogleSignInButton(),
-                    const Spacer(),
-                    _buildTermsAndConditions(theme),
-                  ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // 1. Horizontal Centering Logic
+          final double maxWidth = constraints.maxWidth;
+          const double maxContentWidth = 500.0;
+
+          // Calculates padding to push the content to the center on wide screens
+          final double horizontalPadding = (maxWidth > maxContentWidth)
+              ? (maxWidth - maxContentWidth) / 2
+              : 24.0;
+
+          final bool isWideScreen = maxWidth > 800;
+
+          return SafeArea(
+            child: CustomScrollView(
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding, // Applied calculated padding
+                      vertical: 24.0,
+                    ),
+                    child: Column(
+                      // 3. Vertical Centering Logic: Aligns content in the middle
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Spacer helps distribute extra vertical space above and below the content
+                        if (isWideScreen) const Spacer(),
+
+                        _buildHeader(),
+
+                        if (isWideScreen)
+                          const SizedBox(height: 48)
+                        else
+                          const SizedBox(height: 24),
+
+                        // --- FORM SECTION ---
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              EmailTextField(controller: _emailController),
+                              const SizedBox(height: 20),
+                              PasswordTextField(
+                                label: "Password",
+                                errorText: "Password is required",
+                                controller: _passwordController,
+                                isPasswordObscure: _isPasswordVisible,
+                                passwordToggle: () {
+                                  setState(() {
+                                    _isPasswordVisible = !_isPasswordVisible;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // --- END FORM SECTION ---
+                        const SizedBox(height: 24),
+                        _buildLoginButton(theme),
+                        _doNotHaveAccountTextField(),
+
+                        const SizedBox(height: 24),
+                        _buildDivider(),
+
+                        const SizedBox(height: 24),
+                        _buildGoogleSignInButton(),
+
+                        // Spacer balances the vertical space on wide screens
+                        if (isWideScreen) const Spacer(),
+
+                        _buildTermsAndConditions(theme),
+
+                        const SizedBox(height: 24),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -118,48 +151,22 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildPhoneForm(ThemeData theme) {
-    return Form(
-      key: _formKey,
-      child: TextFormField(
-        controller: _phoneController,
-        keyboardType: TextInputType.phone,
-        maxLength: 10,
-        decoration: InputDecoration(
-          prefixText: "+91 ",
-          labelText: "Mobile Number",
-          counterText: "",
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your mobile number';
-          }
-          if (value.length != 10) {
-            return 'Please enter a valid 10-digit mobile number';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildSendOtpButton(ThemeData theme) {
+  Widget _buildLoginButton(ThemeData theme) {
     return BlocConsumer<AuthViewModel, AuthState>(
       listener: (context, state) {
-        if (state is SendOtpSuccess) {
-          context.pushNamed(AppRoutes.otp, extra: _phoneController.text);
-        } else if (state is SendOtpFailure) {
+        if (state is LoginSuccess) {
+          context.goNamed(AppRoutes.dashboard);
+        } else if (state is LoginFailure) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
-        final isLoading = state is SendOtpLoading;
+        final isLoading = state is LoginLoading;
 
         return ElevatedButton(
-          onPressed: isLoading ? null : _handleSendOtp,
+          onPressed: isLoading ? null : _handleLoginWithEmailAndPassword,
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
@@ -178,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 )
               : const Text(
-                  "Send OTP",
+                  "LOGIN",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -204,23 +211,36 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildGoogleSignInButton() {
-    return ElevatedButton.icon(
-      onPressed: _handleGoogleSignIn,
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          side: BorderSide(color: Colors.grey.shade300),
+    return Wrap(
+      alignment: WrapAlignment.center,
+      children: [
+        IconButton(
+          onPressed: _handleGoogleSignIn,
+          icon: const FaIcon(FontAwesomeIcons.google, color: Colors.red),
         ),
-        backgroundColor: Colors.white,
-      ),
-      icon: const FaIcon(FontAwesomeIcons.google, color: Colors.red),
-      label: const Text(
-        "Sign in with Google",
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
+      ],
+    );
+  }
+
+  Widget _doNotHaveAccountTextField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: Theme.of(context).textTheme.bodySmall,
+          children: [
+            const TextSpan(text: "Don\'t have account?"),
+            TextSpan(
+              text: " Create Account",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => context.pushNamed(AppRoutes.signUp),
+            ),
+          ],
         ),
       ),
     );
@@ -258,5 +278,18 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void _handleLoginWithEmailAndPassword() {
+    if (_formKey.currentState!.validate()) {
+      final email = _emailController.text;
+      final password = _passwordController.text;
+
+      context.read<AuthViewModel>().add(
+        LoginEvent(
+          loginRequestData: LoginRequest(email: email, password: password),
+        ),
+      );
+    }
   }
 }

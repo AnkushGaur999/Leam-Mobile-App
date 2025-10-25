@@ -7,7 +7,7 @@ class SendOtpRequest {
   final String phoneNumber;
   final String deviceId;
 
-  SendOtpRequest({required this.phoneNumber, required this.deviceId});
+  const SendOtpRequest({required this.phoneNumber, required this.deviceId});
 
   factory SendOtpRequest.fromJson(Map<String, dynamic> json) =>
       _$SendOtpRequestFromJson(json);

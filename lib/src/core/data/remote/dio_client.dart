@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:leam/src/core/data/data_state.dart';
 import 'package:leam/src/core/data/remote/interceptor/auth_interceptor.dart';
 
 class DioClient {
@@ -18,7 +17,7 @@ class DioClient {
     try {
       final response = await _dio.get(path);
       return response;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     } catch (e) {
       rethrow;
@@ -29,7 +28,7 @@ class DioClient {
     try {
       final response = await _dio.post(path, data: data);
       return response;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     } catch (e) {
       rethrow;
@@ -40,7 +39,7 @@ class DioClient {
     try {
       final response = await _dio.put(path, data: data);
       return response;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     } catch (e) {
       rethrow;
@@ -51,7 +50,7 @@ class DioClient {
     try {
       final response = await _dio.delete(path);
       return response;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     } catch (e) {
       rethrow;

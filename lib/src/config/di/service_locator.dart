@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:leam/src/core/data/local/app_storage.dart';
 import 'package:leam/src/core/data/remote/dio_client.dart';
@@ -7,6 +8,9 @@ import 'package:leam/src/viewmodels/auth/auth_view_model.dart';
 final GetIt getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   ///
   /// Register your services here
   ///
@@ -19,7 +23,7 @@ Future<void> initDependencies() async {
   ///
 
   getIt.registerFactory<AuthRepository>(
-    () => AuthRepositoryImpl(client: getIt<DioClient>()),
+    () => AuthRepositoryImpl(client: getIt<DioClient>(), auth: auth),
   );
 
   ///

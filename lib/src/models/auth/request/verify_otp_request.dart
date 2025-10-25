@@ -11,7 +11,7 @@ class VerifyOtpRequest{
   @JsonKey(name: 'mobile_number')
   final String mobileNumber;
 
-  VerifyOtpRequest({
+  const VerifyOtpRequest({
     required this.otp,
     required this.mobileNumber,
   });
