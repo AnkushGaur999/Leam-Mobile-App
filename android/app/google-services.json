@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "415637342685",
+    "project_id": "leam-dc054",
+    "storage_bucket": "leam-dc054.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415637342685:android:ffde15380d86574b3b0e34",
+        "android_client_info": {
+          "package_name": "com.leam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYy9VssX7k9ZrsBiFJwxKp2n5s7GGpmvU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
