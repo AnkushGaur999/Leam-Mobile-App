@@ -105,7 +105,7 @@ class AllStatusScreen extends StatelessWidget {
         children: [
           const CircleAvatar(
             radius: 30,
-            backgroundImage: NetworkImage('https://randomuser.me/api/portraits/men/75.jpg'), // Replace with user's avatar
+            backgroundImage: NetworkImage('https://randomuser.me/api/portraits/men/75.jpg'),
           ),
           Positioned(
             bottom: 0,

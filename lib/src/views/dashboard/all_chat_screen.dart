@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:leam/src/config/routes/app_routes.dart';
 
 // Dummy Chat Model
 class Chat {
@@ -17,8 +19,8 @@ class Chat {
   });
 }
 
-class ChatsScreen extends StatelessWidget {
-  const ChatsScreen({super.key});
+class AllChatScreen extends StatelessWidget {
+  const AllChatScreen({super.key});
 
   // Dummy Data
   static final List<Chat> _dummyChats = [
@@ -114,7 +116,7 @@ class ChatsScreen extends StatelessWidget {
               ],
             ),
             onTap: () {
-              // TODO: Navigate to the chat details screen
+              context.pushNamed(AppRoutes.chat);
             },
           );
         },

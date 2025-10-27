@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:leam/src/viewmodels/profile/profile_view_model.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    context.read<ProfileViewModel>().add(GetProfileDetailsEvent());
 
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
@@ -12,37 +15,56 @@ class SettingsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(
-                      'https://randomuser.me/api/portraits/men/75.jpg',
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Ankush Gaur',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+            BlocBuilder<ProfileViewModel, ProfileState>(
+              builder: (context, state) {
+
+                if (state is ProfileDetailsLoaded) {
+                  return Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage: NetworkImage(
+                            state.profileData.photoUrl!,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Flutter Developer',
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                        SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              state.profileData.name!,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              state.profileData.about!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                if (state is ProfileDetailsFailure) {
+                  return Center(child: Text('Error: ${state.message}'));
+                }
+
+                return SizedBox(
+                  height: 100,
+                );
+              },
             ),
+
             const Divider(),
 
             // Settings List
@@ -86,11 +108,7 @@ class SettingsScreen extends StatelessWidget {
               context,
               icon: Icons.logout,
               title: 'Logout',
-              onTap: () {
-
-
-
-              },
+              onTap: () {},
             ),
           ],
         ),

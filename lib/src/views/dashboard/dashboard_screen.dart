@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:leam/src/core/constants/app_colors.dart';
 import 'package:leam/src/views/all_calls_screen.dart';
 import 'package:leam/src/views/all_status_screen.dart';
-import 'package:leam/src/views/chats_screen.dart';
+import 'package:leam/src/views/all_chat_screen.dart';
 import 'package:leam/src/views/settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final PageController _pageController = PageController(initialPage: 0);
 
   final List<Widget> _pages = [
-    const ChatsScreen(),
+    const AllChatScreen(),
     const AllCallsScreen(),
     const AllStatusScreen(),
     const SettingsScreen(),
