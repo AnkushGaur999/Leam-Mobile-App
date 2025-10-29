@@ -1,9 +1,9 @@
 part of 'auth_view_model.dart';
 
 @immutable
-sealed class AuthState extends Equatable {}
+sealed class AuthStates extends Equatable {}
 
-final class AuthStateInitial extends AuthState {
+final class AuthStateInitial extends AuthStates {
   @override
   List<Object?> get props => [];
 }
@@ -12,12 +12,12 @@ final class AuthStateInitial extends AuthState {
 /// Login States
 ///
 
-final class LoginLoading extends AuthState {
+final class LoginLoading extends AuthStates {
   @override
   List<Object?> get props => [];
 }
 
-final class LoginSuccess extends AuthState {
+final class LoginSuccess extends AuthStates {
   final LoginResponse response;
 
   LoginSuccess({required this.response});
@@ -26,7 +26,7 @@ final class LoginSuccess extends AuthState {
   List<Object?> get props => [response];
 }
 
-final class LoginFailure extends AuthState {
+final class LoginFailure extends AuthStates {
   final String message;
 
   LoginFailure(this.message);
@@ -39,12 +39,12 @@ final class LoginFailure extends AuthState {
 /// Sign Up States
 ///
 
-final class SignUpLoading extends AuthState {
+final class SignUpLoading extends AuthStates {
   @override
   List<Object?> get props => [];
 }
 
-final class SignUpSuccess extends AuthState {
+final class SignUpSuccess extends AuthStates {
   final User user;
 
   SignUpSuccess(this.user);
@@ -53,7 +53,7 @@ final class SignUpSuccess extends AuthState {
   List<Object?> get props => [user];
 }
 
-final class SignUpFailure extends AuthState {
+final class SignUpFailure extends AuthStates {
   final String message;
 
   SignUpFailure(this.message);
@@ -66,13 +66,13 @@ final class SignUpFailure extends AuthState {
 /// Send OTP States
 ///
 
-final class SendOtpLoading extends AuthState {
+final class SendOtpLoading extends AuthStates {
   @override
   List<Object?> get props => [];
 }
 
 
-final class SendOtpSuccess extends AuthState {
+final class SendOtpSuccess extends AuthStates {
   final SendOtpResponse response;
 
   SendOtpSuccess(this.response);
@@ -81,7 +81,7 @@ final class SendOtpSuccess extends AuthState {
   List<Object?> get props => [response];
 }
 
-final class SendOtpFailure extends AuthState {
+final class SendOtpFailure extends AuthStates {
   final String message;
 
   SendOtpFailure(this.message);
@@ -94,12 +94,12 @@ final class SendOtpFailure extends AuthState {
 /// Verify OTP States
 ///
 
-final class VerifyOtpLoading extends AuthState {
+final class VerifyOtpLoading extends AuthStates {
   @override
   List<Object?> get props => [];
 }
 
-final class VerifyOtpSuccess extends AuthState {
+final class VerifyOtpSuccess extends AuthStates {
   final VerifyOtpResponse response;
 
   VerifyOtpSuccess(this.response);
@@ -108,7 +108,7 @@ final class VerifyOtpSuccess extends AuthState {
   List<Object?> get props => [response];
 }
 
-final class VerifyOtpFailure extends AuthState {
+final class VerifyOtpFailure extends AuthStates {
   final String message;
 
   VerifyOtpFailure(this.message);

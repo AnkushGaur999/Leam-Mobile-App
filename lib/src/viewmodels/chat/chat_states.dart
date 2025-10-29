@@ -1,9 +1,9 @@
 
 part of 'chat_view_model.dart';
 
-sealed class ChatState extends Equatable{}
+sealed class ChatStates extends Equatable{}
 
-final class ChatInitial extends ChatState{
+final class ChatInitial extends ChatStates{
   @override
   List<Object> get props => [];
 }

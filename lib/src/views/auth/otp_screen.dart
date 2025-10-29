@@ -63,7 +63,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<AuthViewModel, AuthState>(
+      body: BlocConsumer<AuthViewModel, AuthStates>(
         listener: (context, state) {
           if (state is VerifyOtpSuccess) {
             context.goNamed(AppRoutes.dashboard);

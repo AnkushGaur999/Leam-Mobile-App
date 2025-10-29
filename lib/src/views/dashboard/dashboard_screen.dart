@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:leam/src/core/constants/app_colors.dart';
-import 'package:leam/src/views/all_calls_screen.dart';
-import 'package:leam/src/views/all_status_screen.dart';
-import 'package:leam/src/views/all_chat_screen.dart';
-import 'package:leam/src/views/settings_screen.dart';
+import 'package:leam/src/views/dashboard/all_calls_screen.dart';
+import 'package:leam/src/views/dashboard/all_status_screen.dart';
+import 'package:leam/src/views/dashboard/all_chat_screen.dart';
+import 'package:leam/src/views/dashboard/settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -54,6 +54,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: SizedBox(
           height: kBottomNavigationBarHeight,
           child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.white,
             selectedLabelStyle: TextStyle(
               color: AppColors.primaryColor,

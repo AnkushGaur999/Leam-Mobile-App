@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:leam/src/core/app_exceptions.dart';
 import 'package:leam/src/core/data/data_state.dart';
@@ -31,8 +32,13 @@ abstract class AuthRepository {
 class AuthRepositoryImpl implements AuthRepository {
   final DioClient client;
   final FirebaseAuth auth;
+  final FirebaseFirestore firebaseFirestore;
 
-  AuthRepositoryImpl({required this.client, required this.auth});
+  AuthRepositoryImpl({
+    required this.firebaseFirestore,
+    required this.client,
+    required this.auth,
+  });
 
   @override
   Future<DataState<SendOtpResponse>> sendOtp({
@@ -153,6 +159,33 @@ class AuthRepositoryImpl implements AuthRepository {
       await result.user!.updateProfile(
         displayName: "${requestData.fName} ${requestData.lName}",
       );
+
+      await firebaseFirestore.collection('users').doc(result.user!.uid).set({
+        'uid': result.user!.uid,
+        'email': requestData.email,
+        'phone': "",
+        'name': "${requestData.fName} ${requestData.lName}",
+        'photoUrl': "",
+        'gender': "",
+        'dob': "",
+        'address': "",
+        'city': "",
+        'state': "",
+        'country': "",
+        'zipCode': "",
+        'about': "",
+        'bio': "",
+        'isVerified': false,
+        'isActive': true,
+        'userType': "customer",
+        'isBlocked': false,
+        'isSuspended': false,
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+        'deletedAt': null,
+
+        // Add any other user-specific data here
+      });
 
       return DataSuccess(data: result.user!);
     } on FirebaseAuthException catch (e) {

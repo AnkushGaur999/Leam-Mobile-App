@@ -13,11 +13,11 @@ import 'package:leam/src/core/data/data_state.dart';
 import 'package:leam/src/models/auth/request/send_otp_request.dart';
 import 'package:leam/src/models/auth/response/send_otp_response.dart';
 
-part 'auth_event.dart';
+part 'auth_events.dart';
 
-part 'auth_state.dart';
+part 'auth_states.dart';
 
-class AuthViewModel extends Bloc<AuthEvent, AuthState> {
+class AuthViewModel extends Bloc<AuthEvents, AuthStates> {
   final AuthRepository repository;
   final AppStorage appStorage;
 
@@ -29,7 +29,7 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
     on<SignUpEvent>(_signUp);
   }
 
-  Future<void> _sendOtp(SendOtpEvent event, Emitter<AuthState> emit) async {
+  Future<void> _sendOtp(SendOtpEvent event, Emitter<AuthStates> emit) async {
     emit(SendOtpLoading());
 
     final response = await repository.sendOtp(requestData: event.request);
@@ -46,7 +46,7 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _verifyOtp(VerifyOtpEvent event, Emitter<AuthState> emit) async {
+  Future<void> _verifyOtp(VerifyOtpEvent event, Emitter<AuthStates> emit) async {
     emit(VerifyOtpLoading());
 
     final response = await repository.verifyOtp(requestData: event.request);
@@ -58,7 +58,7 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _login(LoginEvent event, Emitter<AuthState> emit) async {
+  Future<void> _login(LoginEvent event, Emitter<AuthStates> emit) async {
     emit(LoginLoading());
 
     final response = await repository.loginWithEmailAndPassword(
@@ -73,7 +73,7 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _signUp(SignUpEvent event, Emitter<AuthState> emit) async {
+  Future<void> _signUp(SignUpEvent event, Emitter<AuthStates> emit) async {
     emit(SignUpLoading());
 
     final response = await repository.signUp(

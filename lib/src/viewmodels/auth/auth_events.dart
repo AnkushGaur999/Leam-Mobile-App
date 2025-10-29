@@ -1,8 +1,8 @@
 part of 'auth_view_model.dart';
 
-sealed class AuthEvent extends Equatable {}
+sealed class AuthEvents extends Equatable {}
 
-class LoginEvent extends AuthEvent {
+class LoginEvent extends AuthEvents {
   final LoginRequest loginRequestData;
 
   LoginEvent({required this.loginRequestData});
@@ -11,7 +11,7 @@ class LoginEvent extends AuthEvent {
   List<Object?> get props => [loginRequestData];
 }
 
-class SignUpEvent extends AuthEvent {
+class SignUpEvent extends AuthEvents {
   final SignUpRequest signUpRequestData;
 
   SignUpEvent({required this.signUpRequestData});
@@ -21,7 +21,7 @@ class SignUpEvent extends AuthEvent {
 
 }
 
-class SendOtpEvent extends AuthEvent {
+class SendOtpEvent extends AuthEvents {
   final SendOtpRequest request;
 
   SendOtpEvent(this.request);
@@ -30,7 +30,7 @@ class SendOtpEvent extends AuthEvent {
   List<Object?> get props => [request];
 }
 
-class VerifyOtpEvent extends AuthEvent {
+class VerifyOtpEvent extends AuthEvents {
   final VerifyOtpRequest request;
 
   VerifyOtpEvent(this.request);

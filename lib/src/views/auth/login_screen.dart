@@ -152,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildLoginButton(ThemeData theme) {
-    return BlocConsumer<AuthViewModel, AuthState>(
+    return BlocConsumer<AuthViewModel, AuthStates>(
       listener: (context, state) {
         if (state is LoginSuccess) {
           context.goNamed(AppRoutes.dashboard);

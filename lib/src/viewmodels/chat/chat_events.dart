@@ -1,8 +1,8 @@
 part of 'chat_view_model.dart';
 
-sealed class ChatEvent extends Equatable {}
+sealed class ChatEvents extends Equatable {}
 
-final class SendMessageEvent extends ChatEvent {
+final class SendMessageEvent extends ChatEvents {
   final String message;
   final String receiverId;
 

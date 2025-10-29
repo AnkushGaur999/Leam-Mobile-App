@@ -4,6 +4,9 @@ import 'package:leam/src/config/di/service_locator.dart';
 import 'package:leam/src/config/routes/app_routes.dart';
 import 'package:leam/src/core/constants/app_colors.dart';
 import 'package:leam/src/viewmodels/auth/auth_view_model.dart';
+import 'package:leam/src/viewmodels/chat/chat_view_model.dart';
+import 'package:leam/src/viewmodels/profile/profile_view_model.dart';
+import 'package:leam/src/viewmodels/user/user_view_model.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -11,7 +14,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => getIt<AuthViewModel>())],
+      providers: [
+        BlocProvider(create: (context) => getIt<AuthViewModel>()),
+        BlocProvider(create: (context) => getIt<ProfileViewModel>()),
+        BlocProvider(create: (context) => getIt<ChatViewModel>()),
+        BlocProvider(create: (context) => getIt<UserViewModel>()),
+      ],
       child: MaterialApp.router(
         title: 'Leam',
         theme: ThemeData(

@@ -2,8 +2,8 @@ import 'package:go_router/go_router.dart';
 import 'package:leam/src/views/auth/login_screen.dart';
 import 'package:leam/src/views/auth/otp_screen.dart';
 import 'package:leam/src/views/auth/sign_up_screen.dart';
-import 'package:leam/src/views/dashboard_screen.dart';
-import 'package:leam/src/views/home_screen.dart';
+import 'package:leam/src/views/chat/chat_screen.dart';
+import 'package:leam/src/views/dashboard/dashboard_screen.dart';
 import 'package:leam/src/views/splash_screen.dart';
 
 class AppRoutes {
@@ -11,15 +11,15 @@ class AppRoutes {
   static const String login = 'login';
   static const String signUp = 'sign-up';
   static const String otp = 'otp';
-  static const String home = 'home';
   static const String dashboard = 'dashboard';
+  static const String chat = 'chat';
 
   static const String _splash = '/';
   static const String _login = '/login';
   static const String _signUp = '/sign-up';
   static const String _otp = '/otp';
-  static const String _home = '/home';
   static const String _dashboard = '/dashboard';
+  static const String _chat = '/chat';
 
   static GoRouter router = GoRouter(
     routes: [
@@ -49,14 +49,15 @@ class AppRoutes {
       ),
 
       GoRoute(
-        name: home,
-        path: _home,
-        builder: (context, state) => const HomeScreen(),
-      ),
-      GoRoute(
         name: dashboard,
         path: _dashboard,
         builder: (context, state) => const DashboardScreen(),
+      ),
+
+      GoRoute(
+        name: chat,
+        path: _chat,
+        builder: (context, state) => const ChatScreen(),
       ),
     ],
   );

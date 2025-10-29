@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:leam/src/config/routes/app_routes.dart';
@@ -47,22 +46,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // The constraints object contains information about the available space,
-          // including maxWidth.
           final double maxWidth = constraints.maxWidth;
 
-          // Define a maximum width for the content, typical for a form on a large screen
           const double maxContentWidth = 600.0;
 
-          // Calculate the padding needed to center the content on wide screens
           final double horizontalPadding = (maxWidth > maxContentWidth)
               ? (maxWidth - maxContentWidth) / 2
-              : 24.0; // Use default padding on smaller screens
+              : 24.0;
 
           return SafeArea(
             child: SingleChildScrollView(
-              // Apply the calculated padding. We'll use this to center the content
-              // on web/desktop and provide standard padding on mobile.
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                 // The content itself will now effectively be constrained by `maxContentWidth`
@@ -73,12 +66,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 24),
                     _buildHeader(),
                     const SizedBox(height: 24),
-                    // --- FORM WIDGETS START HERE ---
                     Form(
                       key: _formKey,
                       child: Column(
                         children: [
-                          // ... (Your TextFormField widgets remain here)
                           PersonNameTextField(
                             controller: _fNameController,
                             labelText: "First Name",
@@ -124,7 +115,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ],
                       ),
                     ),
-                    // --- FORM WIDGETS END HERE ---
                     const SizedBox(height: 24),
                     _buildSignUpButton(theme),
                     const SizedBox(height: 24),
@@ -163,7 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _buildSignUpButton(ThemeData theme) {
-    return BlocConsumer<AuthViewModel, AuthState>(
+    return BlocConsumer<AuthViewModel, AuthStates>(
       listener: (context, state) {
         if (state is SignUpSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -171,19 +161,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
               backgroundColor: Colors.green,
               behavior: SnackBarBehavior.floating,
               content: Text(
-                  "User registered successfully.\nWe’ve sent a verification link to your email. Please verify your email to continue."
+                "User registered successfully.\nWe’ve sent a verification link to your email. Please verify your email to continue.",
               ),
             ),
           );
 
           context.goNamed(AppRoutes.login);
         } else if (state is SignUpFailure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
               backgroundColor: Colors.red,
               behavior: SnackBarBehavior.floating,
-              content: Text(state.message)));
+              content: Text(state.message),
+            ),
+          );
         }
       },
       builder: (context, state) {

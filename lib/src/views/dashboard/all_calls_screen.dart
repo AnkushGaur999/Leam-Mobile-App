@@ -96,7 +96,6 @@ class AllCallsScreen extends StatelessWidget {
       ),
       subtitle: const Text('Share a link for your WhatsApp call'),
       onTap: () {
-        // TODO: Implement create call link functionality
       },
     );
   }
