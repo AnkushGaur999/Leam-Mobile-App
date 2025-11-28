@@ -27,7 +27,17 @@ class MyApp extends StatelessWidget {
           primaryColor: AppColors.primaryColor,
           primarySwatch: AppColors.primarySwatch,
           useMaterial3: true,
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColors.primaryColor,
+            centerTitle: false,
+            titleTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+            iconTheme: IconThemeData(color: Colors.white),
+          ),
         ),
+
         routerConfig: AppRoutes.router,
         debugShowCheckedModeBanner: false,
       ),

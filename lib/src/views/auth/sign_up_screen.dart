@@ -23,7 +23,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _mobileNumberController = TextEditingController();
+
+  //  final TextEditingController _mobileNumberController = TextEditingController();
 
   bool _isNewPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
@@ -35,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _emailController.dispose();
     _newPasswordController.dispose();
     _confirmPasswordController.dispose();
-    _mobileNumberController.dispose();
+    //  _mobileNumberController.dispose();
     super.dispose();
   }
 

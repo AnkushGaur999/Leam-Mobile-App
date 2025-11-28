@@ -4,6 +4,7 @@ import 'package:leam/src/views/auth/otp_screen.dart';
 import 'package:leam/src/views/auth/sign_up_screen.dart';
 import 'package:leam/src/views/chat/chat_screen.dart';
 import 'package:leam/src/views/dashboard/dashboard_screen.dart';
+import 'package:leam/src/views/profile_screen.dart';
 import 'package:leam/src/views/splash_screen.dart';
 
 class AppRoutes {
@@ -13,6 +14,7 @@ class AppRoutes {
   static const String otp = 'otp';
   static const String dashboard = 'dashboard';
   static const String chat = 'chat';
+  static const String profile = 'profile';
 
   static const String _splash = '/';
   static const String _login = '/login';
@@ -20,6 +22,7 @@ class AppRoutes {
   static const String _otp = '/otp';
   static const String _dashboard = '/dashboard';
   static const String _chat = '/chat';
+  static const String _profile = '/profile';
 
   static GoRouter router = GoRouter(
     routes: [
@@ -57,7 +60,20 @@ class AppRoutes {
       GoRoute(
         name: chat,
         path: _chat,
-        builder: (context, state) => const ChatScreen(),
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+          return ChatScreen(
+            id: data['id']!,
+            name: data["name"],
+            image: data['image']!,
+          );
+        },
+      ),
+
+      GoRoute(
+        name: profile,
+        path: _profile,
+        builder: (context, state) => ProfileScreen(),
       ),
     ],
   );

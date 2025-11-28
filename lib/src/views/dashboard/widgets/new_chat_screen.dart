@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:leam/src/config/routes/app_routes.dart';
+import 'package:leam/src/core/constants/app_colors.dart';
 import 'package:leam/src/viewmodels/user/user_view_model.dart';
 
 class NewChatScreen extends StatelessWidget {
@@ -13,6 +14,15 @@ class NewChatScreen extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
+          SizedBox(height: 20),
+          Text(
+            "New Chat",
+            style: TextStyle(
+              fontSize: 20,
+              color: AppColors.primaryColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           SizedBox(height: 20),
           TextFormField(
             decoration: InputDecoration(
@@ -67,8 +77,17 @@ class NewChatScreen extends StatelessWidget {
                               ),
                               trailing: Icon(Icons.add),
                               onTap: () {
+                                final Map<String, dynamic> userData = {
+                                  'id': state.users[index].email,
+                                  'name': state.users[index].name,
+                                  'image': state.users[index].photoUrl,
+                                };
+
                                 context.pop();
-                                context.pushNamed(AppRoutes.chat);
+                                context.pushNamed(
+                                  AppRoutes.chat,
+                                  extra: userData,
+                                );
                               },
                             );
                           },

@@ -11,14 +11,18 @@ class LoginEvent extends AuthEvents {
   List<Object?> get props => [loginRequestData];
 }
 
-class SignUpEvent extends AuthEvents {
+final class SignUpEvent extends AuthEvents {
   final SignUpRequest signUpRequestData;
 
   SignUpEvent({required this.signUpRequestData});
 
   @override
   List<Object?> get props => [signUpRequestData];
+}
 
+final class SignOutEvent extends AuthEvents {
+  @override
+  List<Object?> get props => [];
 }
 
 class SendOtpEvent extends AuthEvents {

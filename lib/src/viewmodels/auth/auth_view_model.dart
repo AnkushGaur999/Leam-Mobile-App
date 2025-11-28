@@ -27,6 +27,7 @@ class AuthViewModel extends Bloc<AuthEvents, AuthStates> {
     on<VerifyOtpEvent>(_verifyOtp);
     on<LoginEvent>(_login);
     on<SignUpEvent>(_signUp);
+    on<SignOutEvent>(_signOut);
   }
 
   Future<void> _sendOtp(SendOtpEvent event, Emitter<AuthStates> emit) async {
@@ -46,7 +47,10 @@ class AuthViewModel extends Bloc<AuthEvents, AuthStates> {
     }
   }
 
-  Future<void> _verifyOtp(VerifyOtpEvent event, Emitter<AuthStates> emit) async {
+  Future<void> _verifyOtp(
+    VerifyOtpEvent event,
+    Emitter<AuthStates> emit,
+  ) async {
     emit(VerifyOtpLoading());
 
     final response = await repository.verifyOtp(requestData: event.request);
@@ -85,5 +89,9 @@ class AuthViewModel extends Bloc<AuthEvents, AuthStates> {
     } else {
       emit(SignUpFailure(response.message!));
     }
+  }
+
+  Future<void> _signOut(SignOutEvent event, Emitter<AuthStates> emit) async {
+    await FirebaseAuth.instance.signOut();
   }
 }

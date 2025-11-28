@@ -62,7 +62,8 @@ class AllStatusScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Status'),
+        backgroundColor: AppColors.primaryColor,
+        title: const Text('Status', style: TextStyle(color: Colors.white)),
       ),
       body: SingleChildScrollView(
         child: Column(

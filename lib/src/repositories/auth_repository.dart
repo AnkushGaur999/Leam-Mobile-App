@@ -27,6 +27,8 @@ abstract class AuthRepository {
   });
 
   Future<DataState<bool>> googleSignIn();
+
+  Future<DataState<bool>> signOut();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -165,7 +167,8 @@ class AuthRepositoryImpl implements AuthRepository {
         'email': requestData.email,
         'phone': "",
         'name': "${requestData.fName} ${requestData.lName}",
-        'photoUrl': "",
+        'photoUrl':
+            "https://static.vecteezy.com/system/resources/previews/019/879/186/large_2x/user-icon-on-transparent-background-free-png.png",
         'gender': "",
         'dob': "",
         'address': "",
@@ -190,6 +193,17 @@ class AuthRepositoryImpl implements AuthRepository {
       return DataSuccess(data: result.user!);
     } on FirebaseAuthException catch (e) {
       return DataError(message: e.code);
+    } catch (e) {
+      final errorMessage = AppExceptions.fromException(e);
+      return DataError(message: errorMessage.message);
+    }
+  }
+
+  @override
+  Future<DataState<bool>> signOut() async {
+    try {
+      await auth.signOut();
+      return DataSuccess(data: true);
     } catch (e) {
       final errorMessage = AppExceptions.fromException(e);
       return DataError(message: errorMessage.message);

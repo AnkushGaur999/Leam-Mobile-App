@@ -131,6 +131,8 @@ class NotificationService{
 
     //  AppRoutes.router.go(AppRoutes.notification);
     }
+
+    showNotification(message);
   }
 
 }

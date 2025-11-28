@@ -34,13 +34,39 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    flavorDimensions += "default"
+
+    productFlavors {
+
+        create("dev") {
+            dimension = "default"
+            resValue(
+                type = "string",
+                name = "app_name",
+                value = "Leam Dev"
+            )
+
+        }
+
+        create("prod") {
+            dimension = "default"
+
+            resValue(
+                type = "string",
+                name = "app_name",
+                value = "Leam Prod"
+            )
+        }
+    }
+
 }
 
 flutter {
     source = "../.."
 }
 
-dependencies{
+dependencies {
 
     implementation("com.google.firebase:firebase-analytics")
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))

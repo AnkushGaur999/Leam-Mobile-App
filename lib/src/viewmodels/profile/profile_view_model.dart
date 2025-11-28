@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:leam/src/core/data/data_state.dart';
@@ -13,6 +14,7 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
 
   ProfileViewModel({required this.repository}) : super(ProfileInitial()) {
     on<GetProfileDetailsEvent>(_fetchProfileData);
+    on<UpdateProfilePictureEvent>(_updateProfilePicture);
     add(GetProfileDetailsEvent());
   }
 
@@ -28,6 +30,24 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileDetailsLoaded(profileData: result.data!));
     } else {
       emit(ProfileDetailsFailure(message: result.message!));
+    }
+  }
+
+  Future<void> _updateProfilePicture(
+    UpdateProfilePictureEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+   // emit(UpdateProfilePictureLoading());
+
+    final result = await repository.uploadProfilePicture(file: event.file);
+
+    if (result is DataSuccess) {
+      print("Success");
+   //   emit(UpdateProfilePictureSuccess());
+      add(GetProfileDetailsEvent());
+    } else {
+      print("Error: ${result.message}");
+   //   emit(UpdateProfilePictureFailed());
     }
   }
 }

@@ -7,6 +7,7 @@ part of 'recent_chat.dart';
 // **************************************************************************
 
 RecentChat _$RecentChatFromJson(Map<String, dynamic> json) => RecentChat(
+  uid: json['uid'] as String,
   name: json['name'] as String,
   imageUrl: json['imageUrl'] as String?,
   senderId: json['senderId'] as String,
@@ -14,16 +15,17 @@ RecentChat _$RecentChatFromJson(Map<String, dynamic> json) => RecentChat(
   message: json['message'] as String,
   type: json['type'] as String,
   isRead: json['isRead'] as bool,
-  createdAt: json['createdAt'] == null
-      ? null
-      : DateTime.parse(json['createdAt'] as String),
-  updatedAt: json['updatedAt'] == null
-      ? null
-      : DateTime.parse(json['updatedAt'] as String),
+  createdAt: const TimestampConverter().fromJson(
+    json['createdAt'] as Timestamp?,
+  ),
+  updatedAt: const TimestampConverter().fromJson(
+    json['updatedAt'] as Timestamp?,
+  ),
 );
 
 Map<String, dynamic> _$RecentChatToJson(RecentChat instance) =>
     <String, dynamic>{
+      'uid': instance.uid,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
       'senderId': instance.senderId,
@@ -31,6 +33,6 @@ Map<String, dynamic> _$RecentChatToJson(RecentChat instance) =>
       'message': instance.message,
       'isRead': instance.isRead,
       'type': instance.type,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
+      'createdAt': const TimestampConverter().toJson(instance.createdAt),
+      'updatedAt': const TimestampConverter().toJson(instance.updatedAt),
     };

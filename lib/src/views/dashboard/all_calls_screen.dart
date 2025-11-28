@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leam/src/core/constants/app_colors.dart';
 
 // Dummy Call Model
 enum CallType { incoming, outgoing, missed }
@@ -63,10 +64,11 @@ class AllCallsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calls'),
+        backgroundColor: AppColors.primaryColor,
+        title: const Text('Calls', style: TextStyle(color: Colors.white)),
       ),
       body: ListView.builder(
-        itemCount: _dummyCalls.length + 1, // +1 for the "Create call link" header
+        itemCount: _dummyCalls.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             return _buildCreateCallLink();
@@ -77,7 +79,7 @@ class AllCallsScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Implement new call functionality
+
         },
         child: const Icon(Icons.add_ic_call),
       ),

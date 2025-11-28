@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:leam/src/core/data/local/app_storage.dart';
 import 'package:leam/src/core/data/remote/dio_client.dart';
@@ -20,6 +21,8 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instanceFor(
   app: Firebase.app(),
   databaseId: "leam",
 );
+
+final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
 Future<void> initDependencies() async {
   ///

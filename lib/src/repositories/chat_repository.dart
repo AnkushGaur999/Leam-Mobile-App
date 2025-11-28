@@ -1,14 +1,16 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:leam/src/config/di/service_locator.dart';
 import 'package:leam/src/core/data/data_state.dart';
 import 'package:leam/src/models/chat/recent_chat.dart';
 import 'package:leam/src/models/chat/user_chat.dart';
 import 'package:leam/src/models/profile_data.dart';
 
 abstract class ChatRepository {
-  // Stream< > getUserChats({required String chatId});
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserChats({
+    required String chatId,
+  });
 
   Future<void> sendMessage({
     required String message,
@@ -18,6 +20,8 @@ abstract class ChatRepository {
   Stream<QuerySnapshot<Map<String, dynamic>>> getRecentChats();
 
   Future<DataState<List<ProfileData>>> getAllUserInfo();
+
+  Future<void> updateMessageStatus({required String chatId});
 }
 
 class ChatRepositoryImpl extends ChatRepository {
@@ -26,25 +30,20 @@ class ChatRepositoryImpl extends ChatRepository {
 
   ChatRepositoryImpl({required this.auth, required this.firestore});
 
-  // @override
-  // Stream<DataState<List<UserChat>>> getUserChats({
-  //   required String chatId,
-  // }) async* {
-  //   try {
-  //     final userEmail = auth.currentUser?.email;
-  //
-  //     final usersChats = await firestore
-  //         .collection('chats')
-  //         .doc(userEmail)
-  //         .collection(chatId)
-  //         .orderBy('createdAt', descending: true)
-  //         .snapshots();
-  //
-  //     yield DataSuccess(data: usersChats);
-  //   } on FirebaseException catch (e) {
-  //     return DataError(message: e.message!);
-  //   }
-  // }
+  @override
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserChats({
+    required String chatId,
+  }) {
+    final chatRoomId = _getChatRoomId(auth.currentUser!.email!, chatId);
+
+
+    return firestore
+        .collection("chats")
+        .doc(chatRoomId)
+        .collection("messages")
+        .orderBy("createdAt", descending: true)
+        .snapshots();
+  }
 
   @override
   Future<void> sendMessage({
@@ -52,58 +51,87 @@ class ChatRepositoryImpl extends ChatRepository {
     required String receiverId,
   }) async {
     try {
-      final userEmail = auth.currentUser?.email;
-      final String name = auth.currentUser!.displayName!;
+      final user = auth.currentUser!;
+      final userEmail = user.email!;
+      final userName = user.displayName ?? "";
 
-      final String imageUrl = auth.currentUser?.photoURL ?? "";
+      final chatRoomId = _getChatRoomId(userEmail, receiverId);
 
+      // ---------------- SEND MESSAGE ----------------
       final UserChat chat = UserChat(
-        name: name,
-        senderId: userEmail!,
+        name: userName,
+        senderId: userEmail,
         receiverId: receiverId,
         message: message,
         type: 'text',
         isRead: false,
       );
 
-      ///
-      /// Insert Data Into Chats Collection
-      ///
+      final chatJson = chat.toJson()
+        ..addAll({
+          "createdAt": FieldValue.serverTimestamp(),
+          "updatedAt": FieldValue.serverTimestamp(),
+        });
+
       await firestore
           .collection('chats')
-          .doc(_getChatRoomId(userEmail, receiverId))
+          .doc(chatRoomId)
           .collection("messages")
-          .add(chat.toJson());
+          .add(chatJson);
 
-      ///
-      /// Insert Data Into Primary Users Recent Chats Collection
-      ///
-      final primaryUserId = await _getUserDocumentId(userEmail);
+      // ---------------- GET USERS ----------------
+      final primaryUser = await _getUserDetails(userEmail);
+      final secondaryUser = await _getUserDetails(receiverId);
+
+      // ---------------- PRIMARY USER RECENT CHAT ----------------
+      final primaryRecentChat = RecentChat(
+        uid: secondaryUser!.email!,
+        name: secondaryUser.name!,
+        imageUrl: secondaryUser.photoUrl ?? "",
+        senderId: userEmail,
+        receiverId: receiverId,
+        message: message,
+        type: "text",
+        isRead: false,
+      );
+
+      final primaryRecentChatJson = primaryRecentChat.toJson()
+        ..addAll({
+          "createdAt": FieldValue.serverTimestamp(),
+          "updatedAt": FieldValue.serverTimestamp(),
+        });
 
       await firestore
           .collection("users")
-          .doc(primaryUserId)
+          .doc(primaryUser!.uid)
           .collection("recent_chats")
           .doc(receiverId)
-          .set(chat.toJson());
+          .set(primaryRecentChatJson);
 
-      ///
-      /// Insert Data Into Secondary User Recent Chats Collection
-      ///
-      final secondaryUserId = await _getUserDocumentId(receiverId);
+      // ---------------- SECONDARY USER RECENT CHAT ----------------
+      final secondaryRecentChat = RecentChat(
+        uid: primaryUser.email!,
+        name: primaryUser.name!,
+        imageUrl: primaryUser.photoUrl ?? "",
+        senderId: userEmail,
+        receiverId: receiverId,
+        message: message,
+        type: "text",
+        isRead: false,
+      );
 
       await firestore
           .collection("users")
-          .doc(secondaryUserId)
+          .doc(secondaryUser.uid)
           .collection("recent_chats")
           .doc(userEmail)
-          .set(chat.toJson());
+          .set(secondaryRecentChat.toJson());
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint("Send Message Error: $e");
     }
   }
 
-  Future<String?> _getUserDocumentId(String email) async {
+  Future<ProfileData?> _getUserDetails(String email) async {
     try {
       final snapshot = await firestore
           .collection('users')
@@ -111,14 +139,14 @@ class ChatRepositoryImpl extends ChatRepository {
           .limit(1)
           .get();
 
-      return snapshot.docs.isNotEmpty ? snapshot.docs.first.id : null;
+      return ProfileData.fromJson(snapshot.docs.first.data());
     } catch (e) {
       debugPrint('Error fetching user document: $e');
       return null;
     }
   }
 
-  String _getChatRoomId(String userId1, userId2) {
+  String _getChatRoomId(String userId1, String userId2) {
     List<String> ids = [userId1, userId2];
     ids.sort();
 
@@ -127,20 +155,20 @@ class ChatRepositoryImpl extends ChatRepository {
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> getRecentChats() {
+    String userId = auth.currentUser!.uid;
+
     return firestore
         .collection('users')
-        .doc("6qQYpwsVjnYai5Aa2Cw4dcMoZFf1")
+        .doc(userId)
         .collection('recent_chats')
         .orderBy('createdAt', descending: true)
         .snapshots();
   }
 
-
-
   @override
   Future<DataState<List<ProfileData>>> getAllUserInfo() async {
     try {
-      final String email = firebaseAuth.currentUser!.email!;
+      final String email = auth.currentUser!.email!;
 
       final res = await firestore
           .collection("users")
@@ -159,5 +187,34 @@ class ChatRepositoryImpl extends ChatRepository {
     } catch (e) {
       return DataError(message: e.toString());
     }
+  }
+
+  @override
+  Future<void> updateMessageStatus({required String chatId}) async{
+
+    try{
+      final chatRoomId = _getChatRoomId(auth.currentUser!.email!, chatId);
+
+      firestore
+          .collection("chats")
+          .doc(chatRoomId)
+          .collection("messages")
+          .where("senderId", isEqualTo: chatId)
+          .get()
+          .then((value) {
+        for (int i = 0; i < value.docs.length; i++) {
+
+          firestore
+              .collection("chats")
+              .doc(chatRoomId)
+              .collection("messages")
+              .doc(value.docs[i].id)
+              .update({"isRead": true});
+        }
+      });
+    }catch(e){
+      debugPrint("Error: e");
+    }
+
   }
 }
