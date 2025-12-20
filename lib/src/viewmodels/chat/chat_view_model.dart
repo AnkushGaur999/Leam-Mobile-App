@@ -59,21 +59,6 @@ class ChatViewModel extends Bloc<ChatEvents, ChatStates> {
     Emitter<ChatStates> emit,
   ) async {
     emit(UserChatsLoading());
-    // await emit.onEach<QuerySnapshot>(
-    //   chatRepository.getUserChats(chatId: event.userId),
-    //   onData: (snapshot) {
-    //     final chats = snapshot.docs
-    //         .map(
-    //           (doc) => UserChat.fromJson(doc.data()! as Map<String, dynamic>),
-    //         )
-    //         .toList();
-    //     emit(UserChatsLoaded(chats: chats.reversed.toList()));
-    //     chatRepository.updateMessageStatus(chatId: event.userId);
-    //   },
-    //   onError: (error, stackTrace) =>
-    //       emit(UserChatsError(message: error.toString())),
-    // );
-
 
     _messagesSubscription = chatRepository
         .getUserChats(chatId: event.userId)

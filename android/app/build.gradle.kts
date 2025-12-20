@@ -55,7 +55,7 @@ android {
             resValue(
                 type = "string",
                 name = "app_name",
-                value = "Leam Prod"
+                value = "Leam"
             )
         }
     }

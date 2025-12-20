@@ -37,17 +37,11 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
     UpdateProfilePictureEvent event,
     Emitter<ProfileState> emit,
   ) async {
-   // emit(UpdateProfilePictureLoading());
-
     final result = await repository.uploadProfilePicture(file: event.file);
 
     if (result is DataSuccess) {
-      print("Success");
-   //   emit(UpdateProfilePictureSuccess());
       add(GetProfileDetailsEvent());
     } else {
-      print("Error: ${result.message}");
-   //   emit(UpdateProfilePictureFailed());
     }
   }
 }

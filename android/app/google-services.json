@@ -1,51 +1,26 @@
 {
   "project_info": {
-    "project_number": "415637342685",
-    "project_id": "leam-dc054",
-    "storage_bucket": "leam-dc054.firebasestorage.app"
+    "project_number": "1037991187398",
+    "project_id": "leam-c34ea",
+    "storage_bucket": "leam-c34ea.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:415637342685:android:34734906ece62d223b0e34",
+        "mobilesdk_app_id": "1:1037991187398:android:6649e46118ef5111c918c7",
         "android_client_info": {
           "package_name": "com.app.leam"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "415637342685-l0psee2es00bmrn13op76n4hlh3ic3bn.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.app.leam",
-            "certificate_hash": "b376f9a5590672b4f7317ab0df28d0b9a348d372"
-          }
-        },
-        {
-          "client_id": "415637342685-hjvgootfou02gbeg6ic5f1ebgj06e0cn.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBYy9VssX7k9ZrsBiFJwxKp2n5s7GGpmvU"
+          "current_key": "AIzaSyDFnDMk6DiXLjqF0PKFoFXrEXT9ASP8UBU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "415637342685-hjvgootfou02gbeg6ic5f1ebgj06e0cn.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "415637342685-5q2rpa10kd670gh7m3q8mmjg8qfvvmq3.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.app.leam"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

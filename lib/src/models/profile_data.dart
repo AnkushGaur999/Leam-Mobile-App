@@ -18,6 +18,7 @@ class ProfileData {
   String? zipCode;
   String? about;
   String? bio;
+  String? fcmToken;
   bool? isVerified;
   bool? isActive;
   String? userType;
@@ -31,6 +32,7 @@ class ProfileData {
     this.name,
     this.photoUrl,
     this.gender,
+    this.fcmToken,
     this.dob,
     this.address,
     this.city,

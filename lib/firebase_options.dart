@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBuR4KUTIop4WyGOwAW3pKPGEFzY1V0III',
-    appId: '1:415637342685:web:3c8af1fc352863d23b0e34',
-    messagingSenderId: '415637342685',
-    projectId: 'leam-dc054',
-    authDomain: 'leam-dc054.firebaseapp.com',
-    storageBucket: 'leam-dc054.firebasestorage.app',
-    measurementId: 'G-ND4656F1BD',
+    apiKey: 'AIzaSyDOiQduDUUeYSXrpxVszeSZGT6rwfQ33HQ',
+    appId: '1:1037991187398:web:5c721e89817b4c59c918c7',
+    messagingSenderId: '1037991187398',
+    projectId: 'leam-c34ea',
+    authDomain: 'leam-c34ea.firebaseapp.com',
+    storageBucket: 'leam-c34ea.firebasestorage.app',
+    measurementId: 'G-1LCFHS4X9Y',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBYy9VssX7k9ZrsBiFJwxKp2n5s7GGpmvU',
-    appId: '1:415637342685:android:34734906ece62d223b0e34',
-    messagingSenderId: '415637342685',
-    projectId: 'leam-dc054',
-    storageBucket: 'leam-dc054.firebasestorage.app',
+    apiKey: 'AIzaSyDFnDMk6DiXLjqF0PKFoFXrEXT9ASP8UBU',
+    appId: '1:1037991187398:android:6649e46118ef5111c918c7',
+    messagingSenderId: '1037991187398',
+    projectId: 'leam-c34ea',
+    storageBucket: 'leam-c34ea.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDot1jFjnLZdAvrmy3EZqe-dPaLXMsKMnQ',
-    appId: '1:415637342685:ios:3cf6b297c5d8e6533b0e34',
-    messagingSenderId: '415637342685',
-    projectId: 'leam-dc054',
-    storageBucket: 'leam-dc054.firebasestorage.app',
+    apiKey: 'AIzaSyAdShk_xecsuvPwGEg9M7tcQOCFhPIHVTg',
+    appId: '1:1037991187398:ios:afe4f24ceda30322c918c7',
+    messagingSenderId: '1037991187398',
+    projectId: 'leam-c34ea',
+    storageBucket: 'leam-c34ea.firebasestorage.app',
     iosBundleId: 'com.app.leam',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDot1jFjnLZdAvrmy3EZqe-dPaLXMsKMnQ',
-    appId: '1:415637342685:ios:3cf6b297c5d8e6533b0e34',
-    messagingSenderId: '415637342685',
-    projectId: 'leam-dc054',
-    storageBucket: 'leam-dc054.firebasestorage.app',
+    apiKey: 'AIzaSyAdShk_xecsuvPwGEg9M7tcQOCFhPIHVTg',
+    appId: '1:1037991187398:ios:afe4f24ceda30322c918c7',
+    messagingSenderId: '1037991187398',
+    projectId: 'leam-c34ea',
+    storageBucket: 'leam-c34ea.firebasestorage.app',
     iosBundleId: 'com.app.leam',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBuR4KUTIop4WyGOwAW3pKPGEFzY1V0III',
-    appId: '1:415637342685:web:a914fdfb1729ec423b0e34',
-    messagingSenderId: '415637342685',
-    projectId: 'leam-dc054',
-    authDomain: 'leam-dc054.firebaseapp.com',
-    storageBucket: 'leam-dc054.firebasestorage.app',
-    measurementId: 'G-C3VV1MDEC5',
+    apiKey: 'AIzaSyDOiQduDUUeYSXrpxVszeSZGT6rwfQ33HQ',
+    appId: '1:1037991187398:web:0c73162de9a3f522c918c7',
+    messagingSenderId: '1037991187398',
+    projectId: 'leam-c34ea',
+    authDomain: 'leam-c34ea.firebaseapp.com',
+    storageBucket: 'leam-c34ea.firebasestorage.app',
+    measurementId: 'G-5SZVQNYH87',
   );
+
 }

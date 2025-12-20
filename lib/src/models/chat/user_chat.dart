@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:leam/src/core/helpers/timestamp_converter.dart';
-import 'package:leam/src/core/utils/time_stamp_string_converter.dart';
 
 part 'user_chat.g.dart';
 

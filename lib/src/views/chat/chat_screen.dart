@@ -53,8 +53,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   widget.image ?? "",
                   width: 50,
                   height: 50,
-                  cacheHeight: 100,
-                  cacheWidth: 100,
+                  cacheHeight: 200,
+                  cacheWidth: 200,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return const Icon(Icons.person, size: 30);

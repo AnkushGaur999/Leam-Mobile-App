@@ -230,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
         text: TextSpan(
           style: Theme.of(context).textTheme.bodySmall,
           children: [
-            const TextSpan(text: "Don\'t have account?"),
+            const TextSpan(text: "Don't have account?"),
             TextSpan(
               text: " Create Account",
               style: TextStyle(

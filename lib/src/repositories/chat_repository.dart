@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:leam/src/core/data/data_state.dart';
+import 'package:leam/src/core/services/notification_service.dart';
 import 'package:leam/src/models/chat/recent_chat.dart';
 import 'package:leam/src/models/chat/user_chat.dart';
 import 'package:leam/src/models/profile_data.dart';
@@ -35,7 +36,6 @@ class ChatRepositoryImpl extends ChatRepository {
     required String chatId,
   }) {
     final chatRoomId = _getChatRoomId(auth.currentUser!.email!, chatId);
-
 
     return firestore
         .collection("chats")
@@ -126,6 +126,14 @@ class ChatRepositoryImpl extends ChatRepository {
           .collection("recent_chats")
           .doc(userEmail)
           .set(secondaryRecentChat.toJson());
+
+      if (secondaryUser.fcmToken != null) {
+        NotificationService.sendPushNotification(
+          secondaryUser.fcmToken!,
+          userName,
+          message,
+        );
+      }
     } catch (e) {
       debugPrint("Send Message Error: $e");
     }
@@ -190,9 +198,8 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<void> updateMessageStatus({required String chatId}) async{
-
-    try{
+  Future<void> updateMessageStatus({required String chatId}) async {
+    try {
       final chatRoomId = _getChatRoomId(auth.currentUser!.email!, chatId);
 
       firestore
@@ -202,19 +209,17 @@ class ChatRepositoryImpl extends ChatRepository {
           .where("senderId", isEqualTo: chatId)
           .get()
           .then((value) {
-        for (int i = 0; i < value.docs.length; i++) {
-
-          firestore
-              .collection("chats")
-              .doc(chatRoomId)
-              .collection("messages")
-              .doc(value.docs[i].id)
-              .update({"isRead": true});
-        }
-      });
-    }catch(e){
+            for (int i = 0; i < value.docs.length; i++) {
+              firestore
+                  .collection("chats")
+                  .doc(chatRoomId)
+                  .collection("messages")
+                  .doc(value.docs[i].id)
+                  .update({"isRead": true});
+            }
+          });
+    } catch (e) {
       debugPrint("Error: e");
     }
-
   }
 }
